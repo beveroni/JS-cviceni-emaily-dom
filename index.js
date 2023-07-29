@@ -1,32 +1,17 @@
-const renderSection = (emails, element) => {
-  element.innerHTML = emails
-    .map((email) => {
-      let iconClass = 'opened';
-      if (email.unread) {
-        iconClass = 'closed';
-      };
+//   Ve vašem projektu předělejte metodu renderSection na komponentu EmailSection. Komponenta bude očekávat props ve tvaru:
+// const { heading, emails, folder } = props;
+// V prop folder očekáváme hodnoty 'read' nebo 'unread'.
+// Založte pro komponentu složku, přesuňte CSS styly, jak už to znáte. Komponenta by měla vyrobit celou jednu sekci s e-maily. V HTML nám pak zůstane jen prázdný element #app.
+// V hlavním souboru použijte komponentu k zobrazení obou sekcí.
+// Zaříďte, aby si komponenta EmailSection stahovala vlastní data. Do prop s názvem emails vložte jako výchozí hodnotu prázdný seznam.
 
-      return `
-        <div class="email">
-          <div class="email__head">
-            <button class="email__icon email__icon--${iconClass}"></button>
-            <div class="email__info">
-              <div class="email__sender">${email.sender.name}</div>
-              <div class="email__subject">${email.subject}</div>
-            </div>
-            <div class="email__time">${email.time}</div>
-          </div>
-          <div class="email__body"></div>
-        </div>
-      `;
-    })
-    .join('');
-};
+import { EmailSection } from './EmailSection/emailsection.js';
 
-fetch(`https://apps.kodim.cz/daweb/trening-api/apis/emails?folder=unread`)
-  .then((response) => response.json())
-  .then((data) => renderSection(data.emails, document.getElementById('unread')));
+// const appElm = document.querySelector('#app');
 
-fetch(`https://apps.kodim.cz/daweb/trening-api/apis/emails?folder=read`)
-  .then((response) => response.json())
-  .then((data) => renderSection(data.emails, document.getElementById('read')));
+document
+  .getElementById('app')
+  .append(
+    EmailSection({ heading: 'Nepřečtené', folder: 'unread' }),
+    EmailSection({ heading: 'Přečtené', folder: 'read' }),
+  );
